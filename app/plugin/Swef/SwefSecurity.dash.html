@@ -1,0 +1,29 @@
+<?php
+
+$options        = array (
+    ''          => 'SwefSecurity options:'
+   ,'inspect'   => 'Inspect plugin properties'
+);
+$option         = $this->page->_GET (SWEF_GET_OPTION);
+if (!array_key_exists($option,$options)) {
+    $option     = SWEF_STR__EMPTY;
+}
+
+?>
+<div id="swefsecurity-dash" class="plugin plugin-dash">
+
+  <h2>Dashboard for SwefSecurity</h2>
+
+  <form class="options" method="get" action="">
+    <input type="hidden" name="<?php echo htmlentities (SWEF_GET_CLASSNAME); ?>" value="\Swef\SwefSecurity" />
+<?php $this->page->pull ('global.form.select.auto_submit',SWEF_GET_OPTION,$option,'options',$options); ?>
+  </form>
+
+<?php if($option=='inspect'): ?>
+  <pre>
+<?php print_r ($this->properties); ?>
+  </pre>
+<?php endif; ?>
+
+</div>
+
