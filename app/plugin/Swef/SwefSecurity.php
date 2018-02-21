@@ -130,7 +130,7 @@ class SwefSecurity extends \Swef\Bespoke\Plugin {
     }
 
     public function log ($info=null) {
-        $logfile            = realpath (SWEF_DIR_LOG.'/'.swefsecurity_log);
+        $logfile            = realpath (swefsecurity_log);
         if (is_readable($logfile)){
             $this->page->diagnosticAdd ('Log file is readable so will use '.SWEF_F_APPEND);
             $mode           = SWEF_F_APPEND;
@@ -199,7 +199,7 @@ class SwefSecurity extends \Swef\Bespoke\Plugin {
             // Name of file containing timestamps and match variable data for this variable
             $file                       = $vname.SWEF_STR__DOT.$value;
             $file                      .= SWEF_STR_EXT_LOG;
-            $file                       = SWEF_DIR_LOG.'/'.swefsecurity_log_dir_scan.'/'.$this->directorise($file);
+            $file                       = swefsecurity_log_dir_scan.'/'.$this->directorise($file);
             if (!is_dir(dirname($file))){
                 if (!@mkdir(dirname($file),swefsecurity_scan_directorise_mode,swefsecurity_scan_directorise_recurse)) {
                     array_push ($this->criticals,'Failed to make directory '.dirname($file));
@@ -314,7 +314,7 @@ class SwefSecurity extends \Swef\Bespoke\Plugin {
     }
 
     public function scanAlert ($scan) {
-        $logfile            = realpath (SWEF_DIR_LOG.'/'.swefsecurity_alert_log);
+        $logfile            = realpath (swefsecurity_alert_log);
         if (is_readable($logfile)){
             $this->page->diagnosticAdd ('Alert log file is readable so will use '.SWEF_F_APPEND);
             $mode           = SWEF_F_APPEND;
