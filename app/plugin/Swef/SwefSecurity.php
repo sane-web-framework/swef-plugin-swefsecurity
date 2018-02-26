@@ -12,8 +12,6 @@ class SwefSecurity extends \Swef\Bespoke\Plugin {
     public  $scans            = array ();        // Look-up table of hit scans and mitigations
 
     public function __construct ($page) {
-        // Get definitions
-        require_once SWEF_CONFIG_PATH.'/Swef/SwefSecurity.define.php';
         // Always construct the base class - PHP does not do this implicitly
         parent::__construct ($page,'\Swef\SwefSecurity');
         $this->scansLoad ();
