@@ -74,7 +74,7 @@ class SwefSecurity extends \Swef\Bespoke\Plugin {
         $this->log ();
     }
 
-    public function die ($msg) {
+    public function die ($msg=SWEF_STR__EMPTY) {
         while (ob_get_level()) {
             ob_end_clean ();
         }
@@ -128,8 +128,8 @@ class SwefSecurity extends \Swef\Bespoke\Plugin {
     }
 
     public function log ($info=null) {
-        $logfile            = realpath (swefsecurity_log);
-        if (is_readable($logfile)){
+        $this->page->diagnosticAdd ('SwefSecurity general log "'.swefsecurity_log.'"');
+        if (is_readable(swefsecurity_log)){
             $this->page->diagnosticAdd ('Log file is readable so will use '.SWEF_F_APPEND);
             $mode           = SWEF_F_APPEND;
         }
@@ -160,13 +160,14 @@ class SwefSecurity extends \Swef\Bespoke\Plugin {
                 array_push ($log,'NOTICE: '.$msg.SWEF_STR__CRLF);
             }
         }
-        $fp                         = @fopen ($logfile,$mode);
+        $fp                         = @fopen (swefsecurity_log,$mode);
         if ($fp) {
             $write                  = @fwrite ($fp,implode(SWEF_STR__EMPTY,$log));
             @fclose ($fp);
+            @chmod (swefsecurity_log,SWEF_CHMOD_FILE);
         }
         if (!$write) {
-            $this->page->diagnosticAdd ('Could not write to file '.$file.' - dying now');
+            $this->page->diagnosticAdd ('Could not write to file "'.$logfile.'" - dying now [1]');
             $this->die ();
         }
     }
@@ -199,10 +200,11 @@ class SwefSecurity extends \Swef\Bespoke\Plugin {
             $file                      .= SWEF_STR_EXT_LOG;
             $file                       = swefsecurity_log_dir_scan.'/'.$this->directorise($file);
             if (!is_dir(dirname($file))){
-                if (!@mkdir(dirname($file),swefsecurity_scan_directorise_mode,swefsecurity_scan_directorise_recurse)) {
+                if (!mkdir(dirname($file),swefsecurity_scan_directorise_mode,swefsecurity_scan_directorise_recurse)) {
                     array_push ($this->criticals,'Failed to make directory '.dirname($file));
                     continue;
                 }
+                chmod (dirname($file),SWEF_CHMOD_DIR);
             }
             // Load and unserialize() the data
             $times                      = null;
@@ -302,8 +304,9 @@ class SwefSecurity extends \Swef\Bespoke\Plugin {
                 @fclose ($fp);
             }
             if (!$write) {
-                array_push ($this->criticals,'Could not write to file '.$file);
+                array_push ($this->criticals,'Could not write to file "'.$file.'" [2]');
             }
+            @chmod ($file,SWEF_CHMOD_FILE);
             if ($mitigate) {
                 $mitigate[swefsecurity_str_file] = $file;
                 $this->scanMitigate ($mitigate);
@@ -332,7 +335,7 @@ class SwefSecurity extends \Swef\Bespoke\Plugin {
             @fclose ($fp);
         }
         if (!$write) {
-            $this->page->diagnosticAdd ('Could not write to file '.$logfile.' - dying now');
+            $this->page->diagnosticAdd ('Could not write to file "'.$logfile.'" - dying now [3]');
             $this->die ();
         }
     }
