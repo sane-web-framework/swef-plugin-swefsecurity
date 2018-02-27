@@ -5,8 +5,5 @@ define ( 'swefsecurity_log_dir_scan',               './app/log/swef-plugin-swefs
 define ( 'swefsecurity_log',                        './app/log/swef-plugin-swefsecurity/general.log'    );
 define ( 'swefsecurity_alert_log',                  './app/log/swef-plugin-swefsecurity/alert.log'      );
 define ( 'swefsecurity_log_all',                    false                                               );
-define ( 'swefsecurity_scan_directorise_chars_csv', '.,[,@'                                             );
-define ( 'swefsecurity_scan_directorise_mode',      0777                                                );
-define ( 'swefsecurity_scan_directorise_recurse',   SWEF_BOOL_TRUE                                      );
 
 ?>

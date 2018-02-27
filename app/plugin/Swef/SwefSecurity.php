@@ -14,6 +14,15 @@ class SwefSecurity extends \Swef\Bespoke\Plugin {
     public function __construct ($page) {
         // Always construct the base class - PHP does not do this implicitly
         parent::__construct ($page,'\Swef\SwefSecurity');
+        // Ensure swefsecurity_log_dir_scan exists
+            if (!is_dir(swefsecurity_log_dir_scan)) {
+                if (!mkdir(swefsecurity_log_dir_scan,SWEF_CHMOD_DIR)) {
+                    array_push ($this->criticals,'Failed to make directory "'.swefsecurity_log_dir_scan.'"');
+                    $this->page->diagnosticAdd ('Failed to make directory "'.swefsecurity_log_dir_scan.'"');
+                    $this->die ();
+                }
+            }
+        // Load scan configuration
         $this->scansLoad ();
         // Secure connection warnings
         $this->https ();
@@ -200,11 +209,10 @@ class SwefSecurity extends \Swef\Bespoke\Plugin {
             $file                      .= SWEF_STR_EXT_LOG;
             $file                       = swefsecurity_log_dir_scan.'/'.$this->directorise($file);
             if (!is_dir(dirname($file))){
-                if (!mkdir(dirname($file),swefsecurity_scan_directorise_mode,swefsecurity_scan_directorise_recurse)) {
+                if (!mkdir(dirname($file),SWEF_CHMOD_DIR,swefsecurity_scan_directorise_recurse)) {
                     array_push ($this->criticals,'Failed to make directory '.dirname($file));
                     continue;
                 }
-                chmod (dirname($file),SWEF_CHMOD_DIR);
             }
             // Load and unserialize() the data
             $times                      = null;

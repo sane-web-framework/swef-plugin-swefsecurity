@@ -39,7 +39,9 @@ define ( 'swefsecurity_str_times',                  'times'                     
 define ( 'swefsecurity_str_type',                   'type'                                          );
 define ( 'swefsecurity_str_unset',                  'unset'                                         );
 
-// Files
+// Files and directories
 define ( 'swefsecurity_file_dash',                  SWEF_DIR_PLUGIN.'/Swef/SwefSecurity.dash.html'  );
+define ( 'swefsecurity_scan_directorise_chars_csv', '.,[,@'                                             );
+define ( 'swefsecurity_scan_directorise_recurse',   SWEF_BOOL_TRUE                                      );
 
 ?>
