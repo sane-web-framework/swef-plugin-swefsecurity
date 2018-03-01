@@ -313,6 +313,7 @@ class SwefSecurity extends \Swef\Bespoke\Plugin {
             if ($fp) {
                 $write              = @fwrite ($fp,serialize($times));
                 @fclose ($fp);
+                @chmod ($file,SWEF_CHMOD_FILE);
             }
             if (!$write) {
                 array_push ($this->criticals,'Could not write to file "'.$file.'" [2]');
@@ -327,6 +328,9 @@ class SwefSecurity extends \Swef\Bespoke\Plugin {
 
     public function scanAlert ($scan) {
         $logfile            = realpath (swefsecurity_alert_log);
+        if (!$logfile) {
+            $logfile        = swefsecurity_alert_log;
+        }
         if (is_readable($logfile)){
             $this->page->diagnosticAdd ('Alert log file is readable so will use '.SWEF_F_APPEND);
             $mode           = SWEF_F_APPEND;
@@ -344,6 +348,7 @@ class SwefSecurity extends \Swef\Bespoke\Plugin {
         if ($fp) {
             $write          = fwrite ($fp,$log);
             @fclose ($fp);
+            @chmod ($logfile,SWEF_CHMOD_FILE);
         }
         if (!$write) {
             $this->page->diagnosticAdd ('Could not write to file "'.$logfile.'" - dying now [3]');
