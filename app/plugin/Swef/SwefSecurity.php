@@ -90,7 +90,10 @@ class SwefSecurity extends \Swef\Bespoke\Plugin {
         if (SWEF_DIAGNOSTIC) {
             $this->page->diagnosticOutput ();
         }
-        header (SWEF_HTTP_STATUS_MSG_555);
+        else {
+            $msg = SWEF_STR__EMPTY;
+        }
+        $this->page->swef->statusHeader (SWEF_HTTP_STATUS_CODE_420);
         die ($msg);
     }
 
