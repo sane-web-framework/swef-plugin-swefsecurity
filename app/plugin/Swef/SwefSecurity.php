@@ -386,7 +386,7 @@ class SwefSecurity extends \Swef\Bespoke\Plugin {
     public function scansLoad ($force=null) {
         if (SWEF_CONFIG_STORE_LOOKUP_FILES && !$force) {
             $file               = swefsecurity_str_scans.SWEF_STR_EXT_VAR;
-            $scans              = $this->page->swef->lookupFileGet ($file);
+            $scans              = $this->page->swef->lookupFileGet (SWEF_VENDOR_SWEF,$file);
             if (is_array($scans)) {
                 $this->page->diagnosticAdd ('Got scans from file inclusion');
                 $this->scans    = $scans;
@@ -435,7 +435,7 @@ class SwefSecurity extends \Swef\Bespoke\Plugin {
             }
         }
         if (SWEF_CONFIG_STORE_LOOKUP_FILES) {
-            $this->page->swef->lookupFileSet ($file,$this->scans);
+            $this->page->swef->lookupFileSet (SWEF_VENDOR_SWEF,$file,$this->scans);
         }
         return SWEF_BOOL_TRUE;
     }
