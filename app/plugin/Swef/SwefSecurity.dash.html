@@ -15,7 +15,7 @@ if (!array_key_exists($option,$options)) {
   <h2>Dashboard for SwefSecurity</h2>
 
   <form class="options" method="get" action="">
-    <input type="hidden" name="<?php echo htmlentities (SWEF_GET_CLASSNAME); ?>" value="\Swef\SwefSecurity" />
+    <input type="hidden" name="<?php echo htmlspecialchars (SWEF_GET_CLASSNAME); ?>" value="\Swef\SwefSecurity" />
 <?php $this->page->pull ('global.form.select.auto_submit',SWEF_GET_OPTION,$option,'options',$options); ?>
   </form>
 
